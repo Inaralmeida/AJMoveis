@@ -1,0 +1,152 @@
+/* ==========================================================
+   Tema escuro: preto e dourado de ponta a ponta.
+   Carregado só na versão escura (escuro.html), depois do style.css.
+   ========================================================== */
+@property --ang {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+:root {
+  --paper: #111113;
+  --white: #0a0a0b;
+  --text: #f1f1f3;
+  --muted: #a4a6ae;
+  --line: rgba(255, 255, 255, .1);
+  --card: #141416;
+  --gold-line: rgba(217, 169, 61, .22);
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 12px 30px rgba(0, 0, 0, .45);
+}
+
+body { background: var(--white); color: var(--text); }
+
+/* A faixa do topo continua amarela, igual à versão clara. */
+
+/* ----- Seções ----- */
+.section { background: var(--white); position: relative; }
+.section--paper {
+  background:
+    radial-gradient(900px 420px at 0% 0%, rgba(217, 169, 61, .09), transparent 60%),
+    radial-gradient(700px 380px at 100% 100%, rgba(217, 169, 61, .06), transparent 60%),
+    var(--paper);
+}
+.section + .section, .stats, .cta-band + .section { border-top: 1px solid var(--gold-line); }
+.eyebrow--dark { color: var(--gold); }
+.section__head p:not(.eyebrow) { color: var(--muted); }
+
+/* Linha dourada que cresce ao lado do "eyebrow" */
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; }
+.eyebrow::after { content: ''; width: 0; height: 2px; background: linear-gradient(90deg, var(--gold), transparent); transition: width 1s .3s ease; }
+.is-in .eyebrow::after, .hero .eyebrow::after { width: 56px; }
+
+/* Títulos com brilho dourado */
+.hero h1 em, .stat strong, .card--promo-alt h3, .section h2 em {
+  background: linear-gradient(100deg, #b8852a 0%, var(--gold-2) 25%, #fff3c4 45%, var(--gold-2) 60%, #b8852a 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: goldtext 5s linear infinite;
+}
+@keyframes goldtext { from { background-position: 100% 0; } to { background-position: -150% 0; } }
+
+/* ----- Botões ----- */
+.btn--outline { color: var(--text); border-color: rgba(255, 255, 255, .35); }
+.btn--outline:hover { background: transparent; border-color: var(--gold); color: var(--gold-2); }
+.btn--dark { background: var(--gold); color: var(--ink); }
+.btn--dark:hover { background: var(--gold-2); }
+
+/* ----- Catálogo ----- */
+.chip { background: #151517; border-color: var(--line); color: #dcdde1; }
+.chip:hover { border-color: var(--gold); }
+.chip[aria-selected="true"] { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+.chip[aria-selected="true"] span { color: rgba(14, 14, 15, .65); }
+.search { background: #151517; border-color: var(--line); }
+.search input { color: var(--text); }
+.search:focus-within { border-color: var(--gold); }
+
+.card { background: var(--card); border-color: var(--gold-line); position: relative; isolation: isolate; }
+.card__img { background: radial-gradient(circle at 50% 40%, #ffffff, #e9e9ea); margin: 10px 10px 0; border-radius: 10px; overflow: hidden; }
+.card__body { border-top: 0; }
+.card__code { color: var(--gold); }
+.card h3 { color: #fff; }
+.specs li { color: var(--muted); }
+.specs b { color: #e6e6e8; }
+.card__more { border-color: var(--line); color: #e6e6e8; }
+.card__more:hover { border-color: var(--gold); color: var(--gold-2); }
+
+/* Luz que segue o mouse e borda dourada girando */
+.card::before {
+  content: ''; position: absolute; inset: 0; z-index: -1; border-radius: inherit; opacity: 0; transition: opacity .3s;
+  background: radial-gradient(320px circle at var(--mx, 50%) var(--my, 50%), rgba(217, 169, 61, .16), transparent 60%);
+}
+.card::after {
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none; opacity: 0; transition: opacity .3s;
+  background: conic-gradient(from var(--ang), transparent 0deg, var(--gold-2) 70deg, transparent 140deg, transparent 220deg, var(--gold) 290deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: spinborder 3s linear infinite;
+}
+.card:hover::before, .card:hover::after { opacity: 1; }
+.card:hover { box-shadow: 0 24px 50px rgba(0, 0, 0, .55), 0 0 0 1px rgba(217, 169, 61, .2); }
+@keyframes spinborder { to { --ang: 360deg; } }
+.card.card--promo::before { inset: -70px -70px auto auto; opacity: 1; z-index: 0; background: none; border-radius: 50%; }
+.card.card--promo::after { display: none; }
+
+.promo-strip li { background: #141416; }
+.catalog__empty { color: var(--muted); }
+
+/* ----- Passos ----- */
+.steps li { background: var(--card); border: 1px solid var(--gold-line); }
+.steps__n { background: var(--gold); color: var(--ink); }
+.steps p { color: var(--muted); }
+
+/* ----- Orçamento ----- */
+.quote__form { background: var(--card); color: var(--text); border: 1px solid var(--gold-line); box-shadow: 0 30px 80px rgba(0, 0, 0, .6), 0 0 0 1px rgba(217, 169, 61, .08); }
+.field input, .field select { background: #0d0d0f; color: var(--text); border-color: var(--line); }
+.field input::placeholder { color: #6f717a; }
+.field select option, .field select optgroup { background: #141416; color: #f1f1f3; }
+.quote__summary { background: #0d0d0f; border: 1px solid var(--gold-line); }
+.quote__summary svg { color: var(--gold); }
+.quote__error { color: #ff8a80; }
+
+/* ----- FAQ ----- */
+.faq details { background: var(--card); border-color: var(--line); }
+.faq details:hover { border-color: var(--gold-line); }
+.faq details[open] { border-color: var(--gold); box-shadow: 0 0 0 1px rgba(217, 169, 61, .25), var(--shadow); }
+.faq summary::after { color: var(--gold); }
+.faq details p { color: var(--muted); }
+.faq__more { background: #141416; border: 1px solid var(--gold-line); }
+
+/* ----- Contato ----- */
+.contact__list svg { color: var(--gold); }
+.contact__map iframe { filter: invert(90%) hue-rotate(180deg) saturate(.6) contrast(.92); border: 1px solid var(--gold-line); }
+
+/* ----- Modal ----- */
+.modal { background: var(--card); color: var(--text); border: 1px solid var(--gold-line); }
+.modal__body img { border-color: var(--line); }
+.modal__body p, .modal__code, .modal__perks { color: var(--muted); }
+.modal__close { background: #222327; color: #fff; }
+.modal__perks svg { color: var(--gold); }
+
+/* ----- Rodapé ----- */
+.footer { border-top: 1px solid var(--gold-line); }
+
+/* ----- Brilho ambiente no fundo ----- */
+.section--paper::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .35;
+  background-image: linear-gradient(rgba(217, 169, 61, .05) 1px, transparent 1px), linear-gradient(90deg, rgba(217, 169, 61, .05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(180deg, #000, transparent 70%);
+  -webkit-mask-image: linear-gradient(180deg, #000, transparent 70%);
+}
+.section--paper > .container { position: relative; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero h1 em, .stat strong, .card--promo-alt h3, .card::after { animation: none; }
+}
+
+/* Cards de vantagem mantêm o próprio fundo */
+.card.card--promo { background: linear-gradient(150deg, var(--gold-2), var(--gold) 55%, #b9862a); border: 0; }
+.card.card--promo-alt { background: linear-gradient(150deg, #2a2b30, var(--ink)); border: 1px solid rgba(217, 169, 61, .45); }
+.card.card--promo h3 { color: var(--ink); }
+.card.card--promo-alt h3 { color: transparent; }
